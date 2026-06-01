@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { logoutAction } from '../actions/auth';
 
@@ -19,13 +19,48 @@ export default function DashboardClientLayout({
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const pathname = usePathname();
 
+  // Synchronize mobile and desktop body classes on resize and mount
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobile = window.innerWidth <= 1024;
+      if (isMobile) {
+        document.body.classList.remove('leftpanel-collapsed');
+      } else {
+        document.body.classList.remove('leftpanel-show');
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial check
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      document.body.classList.remove('leftpanel-show', 'leftpanel-collapsed');
+    };
+  }, []);
+
+  // Close mobile sidebar menu when changing pages
+  useEffect(() => {
+    document.body.classList.remove('leftpanel-show');
+  }, [pathname]);
+
   const toggleSidebar = () => {
-    const isCollapsed = !collapsed;
-    setCollapsed(isCollapsed);
-    if (isCollapsed) {
-      document.body.classList.add('leftpanel-collapsed');
+    const isMobile = window.innerWidth <= 1024;
+
+    if (isMobile) {
+      if (document.body.classList.contains('leftpanel-show')) {
+        document.body.classList.remove('leftpanel-show');
+      } else {
+        document.body.classList.add('leftpanel-show');
+      }
     } else {
-      document.body.classList.remove('leftpanel-collapsed');
+      const isCollapsed = !collapsed;
+      setCollapsed(isCollapsed);
+      if (isCollapsed) {
+        document.body.classList.add('leftpanel-collapsed');
+      } else {
+        document.body.classList.remove('leftpanel-collapsed');
+      }
     }
   };
 
@@ -41,7 +76,7 @@ export default function DashboardClientLayout({
   return (
     <section style={{ minHeight: '100vh', display: 'flex', flexDirection: 'row' }}>
       {/* Sidebar (replacing left-column.php) */}
-      <div className="leftpanel" style={{ minHeight: '100vh', position: 'relative' }}>
+      <div className="leftpanel" style={{ minHeight: '100vh' }}>
         <div className="logopanel" style={{ height: '50px', background: '#fff', padding: '5px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <a href="#" style={{ display: 'block' }}>
             <img 
