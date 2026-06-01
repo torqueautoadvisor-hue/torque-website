@@ -13,14 +13,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="stylesheet" href="/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="/css/style.default.css" />
-        <link rel="stylesheet" href="/css/font-awesome.min.css" />
-        <link rel="stylesheet" href="/css/roboto.css" />
-        <link rel="stylesheet" href="/css/lato.css" />
-        <link rel="stylesheet" href="/css/animate.min.css" />
-      </head>
       <body>
         {children}
       </body>

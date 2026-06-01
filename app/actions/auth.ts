@@ -39,7 +39,7 @@ export async function loginAction(contact: string, rawPassword: string) {
         path: '/'
       });
 
-      const redirectPath = admin.adm_cat_id === 2 ? '/rto' : '/insurance';
+      const redirectPath = admin.adm_cat_id === 2 ? '/sf/rto' : '/sf/insurance';
       return { success: true, redirect: redirectPath };
     } else {
       // Sub Admin Verification - Generate 6-digit random OTP
@@ -62,7 +62,7 @@ export async function loginAction(contact: string, rawPassword: string) {
         path: '/'
       });
 
-      return { success: true, redirect: '/verify-otp', demoOtp: otp };
+      return { success: true, redirect: '/sf/verify-otp', demoOtp: otp };
     }
   } catch (err: any) {
     console.error('Login action database query failed:', err.message);
@@ -115,7 +115,7 @@ export async function verifyOtpAction(otp: string) {
     // Clear temporary otp user cookie
     cookieStore.delete('otp_user_id');
 
-    const redirectPath = admin.adm_cat_id === 2 ? '/rto' : '/insurance';
+    const redirectPath = admin.adm_cat_id === 2 ? '/sf/rto' : '/sf/insurance';
     return { success: true, redirect: redirectPath };
   } catch (err: any) {
     console.error('Verify OTP error:', err.message);
@@ -127,5 +127,5 @@ export async function logoutAction() {
   const cookieStore = await cookies();
   cookieStore.delete('session');
   cookieStore.delete('otp_user_id');
-  return { success: true, redirect: '/' };
+  return { success: true, redirect: '/sf' };
 }

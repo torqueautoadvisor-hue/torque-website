@@ -5,42 +5,26 @@ export function middleware(request: NextRequest) {
   const session = request.cookies.get('session')?.value;
   const path = request.nextUrl.pathname;
 
-  // Protected paths
-  const isDashboardPath = 
-    path.startsWith('/insurance') || 
-    path.startsWith('/rto') || 
-    path.startsWith('/calculators') || 
-    path.startsWith('/ughrani') || 
-    path.startsWith('/settings') ||
-    path.startsWith('/taken') ||
-    path.startsWith('/renewal') ||
-    path.startsWith('/claims') ||
-    path.startsWith('/license') ||
-    path.startsWith('/vahan') ||
-    path.startsWith('/fitness') ||
-    path.startsWith('/cheque') ||
-    path.startsWith('/salary') ||
-    path.startsWith('/expenses') ||
-    path.startsWith('/daily-hisab') ||
-    path.startsWith('/sub-admins') ||
-    path.startsWith('/setup');
+  const isAuthPage = path === '/sf' || path === '/sf/verify-otp';
 
-  if (isDashboardPath && !session) {
-    // Redirect to login page if unauthorized
-    return NextResponse.redirect(new URL('/', request.url));
-  }
-
-  // Redirect logged-in users away from auth pages
-  if ((path === '/' || path === '/verify-otp') && session) {
-    try {
-      const sessionData = JSON.parse(session);
-      const redirectPath = sessionData.adm_cat_id === 2 ? '/rto' : '/insurance';
-      return NextResponse.redirect(new URL(redirectPath, request.url));
-    } catch (e) {
-      // Clear corrupt session
-      const response = NextResponse.next();
-      response.cookies.delete('session');
-      return response;
+  if (!session) {
+    // If not logged in and requesting a protected CRM page, redirect to /sf (login page)
+    if (!isAuthPage) {
+      return NextResponse.redirect(new URL('/sf', request.url));
+    }
+  } else {
+    // If logged in and requesting the auth pages (/sf or /sf/verify-otp), redirect to dashboard
+    if (isAuthPage) {
+      try {
+        const sessionData = JSON.parse(session);
+        const redirectPath = sessionData.adm_cat_id === 2 ? '/sf/rto' : '/sf/insurance';
+        return NextResponse.redirect(new URL(redirectPath, request.url));
+      } catch (e) {
+        // Clear corrupt session cookie
+        const response = NextResponse.next();
+        response.cookies.delete('session');
+        return response;
+      }
     }
   }
 
@@ -48,25 +32,8 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
+  // Only match /sf and subpaths
   matcher: [
-    '/',
-    '/verify-otp',
-    '/insurance/:path*',
-    '/rto/:path*',
-    '/calculators/:path*',
-    '/settings/:path*',
-    '/taken/:path*',
-    '/renewal/:path*',
-    '/claims/:path*',
-    '/license/:path*',
-    '/vahan/:path*',
-    '/fitness/:path*',
-    '/cheque/:path*',
-    '/salary/:path*',
-    '/ughrani/:path*',
-    '/expenses/:path*',
-    '/daily-hisab/:path*',
-    '/sub-admins/:path*',
-    '/setup/:path*'
+    '/sf/:path*'
   ]
 };
