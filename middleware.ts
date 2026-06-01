@@ -11,7 +11,19 @@ export function middleware(request: NextRequest) {
     path.startsWith('/rto') || 
     path.startsWith('/calculators') || 
     path.startsWith('/ughrani') || 
-    path.startsWith('/settings');
+    path.startsWith('/settings') ||
+    path.startsWith('/taken') ||
+    path.startsWith('/renewal') ||
+    path.startsWith('/claims') ||
+    path.startsWith('/license') ||
+    path.startsWith('/vahan') ||
+    path.startsWith('/fitness') ||
+    path.startsWith('/cheque') ||
+    path.startsWith('/salary') ||
+    path.startsWith('/expenses') ||
+    path.startsWith('/daily-hisab') ||
+    path.startsWith('/sub-admins') ||
+    path.startsWith('/setup');
 
   if (isDashboardPath && !session) {
     // Redirect to login page if unauthorized
@@ -36,5 +48,25 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/verify-otp', '/insurance/:path*', '/rto/:path*', '/calculators/:path*', '/settings/:path*']
+  matcher: [
+    '/',
+    '/verify-otp',
+    '/insurance/:path*',
+    '/rto/:path*',
+    '/calculators/:path*',
+    '/settings/:path*',
+    '/taken/:path*',
+    '/renewal/:path*',
+    '/claims/:path*',
+    '/license/:path*',
+    '/vahan/:path*',
+    '/fitness/:path*',
+    '/cheque/:path*',
+    '/salary/:path*',
+    '/ughrani/:path*',
+    '/expenses/:path*',
+    '/daily-hisab/:path*',
+    '/sub-admins/:path*',
+    '/setup/:path*'
+  ]
 };
