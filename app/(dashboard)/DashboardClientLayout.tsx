@@ -42,12 +42,10 @@ export default function DashboardClientLayout({
     <section style={{ minHeight: '100vh', display: 'flex', flexDirection: 'row' }}>
       {/* Sidebar (replacing left-column.php) */}
       <div className="leftpanel" style={{ minHeight: '100vh', position: 'relative' }}>
-        <div className="logopanel">
-          <center>
-            <a href="#">
-              <img src="/images/logo.png" width="150px" alt="Logo" />
-            </a>
-          </center>
+        <div className="logopanel" style={{ height: '50px', padding: '5px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
+          <a href="#" style={{ display: 'block' }}>
+            <img src="/images/logo.png" style={{ maxHeight: '35px', width: 'auto', display: 'block', margin: '0 auto' }} alt="Logo" />
+          </a>
         </div>
         
         <div className="leftpanelinner">
