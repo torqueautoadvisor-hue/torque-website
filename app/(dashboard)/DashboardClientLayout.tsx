@@ -45,7 +45,7 @@ export default function DashboardClientLayout({
         <div className="logopanel">
           <center>
             <a href="#">
-              <img src="/images/logo.jpg" width="150px" alt="Logo" />
+              <img src="/images/logo.png" width="150px" alt="Logo" />
             </a>
           </center>
         </div>

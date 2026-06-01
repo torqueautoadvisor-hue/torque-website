@@ -48,7 +48,7 @@ export default function LoginPage() {
           <div className="col-md-6">
             <div>
               <center>
-                <img src="/images/logo.jpg" width="200px" alt="Logo" />
+                <img src="/images/logo.png" width="200px" alt="Logo" />
                 <br /><br />
               </center>
             </div>
